@@ -1,10 +1,9 @@
 <?php
 namespace ybrenLib\registerCenter\core;
 
-use ybren\eureka\discovery\DiscoveryStrategy;
 use ybrenLib\registerCenter\core\bean\Instance;
+use ybrenLib\registerCenter\core\driver\eureka\discovery\DiscoveryStrategy;
 use ybrenLib\registerCenter\core\driver\eureka\discovery\RandomStrategy;
-use ybrenLib\registerCenter\core\exception\InstanceNotFoundException;
 use ybrenLib\registerCenter\driver\eureka\EurekaRegisterCenter;
 
 class RegisterCenterClient{
@@ -37,7 +36,7 @@ class RegisterCenterClient{
 
     public function __construct(){
         $this->registerCenterDriver = new $this->config['driver']();
-        $this->discoveryStrategy = new $this->config['discoveryStrategy'];
+        $this->discoveryStrategy = new $this->config['discoveryStrategy']();
         $this->setCacheDriver();
     }
 
@@ -54,9 +53,12 @@ class RegisterCenterClient{
      * @param $serviceName
      * @return Instance
      */
-    public function getInstance($serviceName){
+    public function getInstance($serviceName , DiscoveryStrategy $discoveryStrategy = null){
         $instances = $this->fetchInstances($serviceName);
-        return $this->discoveryStrategy->getInstance($instances);
+        if(is_null($discoveryStrategy)){
+            $discoveryStrategy = $this->discoveryStrategy;
+        }
+        return $discoveryStrategy->getInstance($instances);
     }
 
     /**
