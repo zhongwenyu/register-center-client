@@ -63,12 +63,12 @@ class InstanceUtil{
         $status = $metedata['status'] == "UP" ? "UP" : "DOWN";
         $address = $metedata['ipAddr'] . ":" . $metedata['port']['$'];
         $instance = new Instance();
-        $instance->setIp($metedata['ipAddr']);
+        //    $instance->setIp($metedata['ipAddr']);
+        $instance->setIp($metedata['hostName']);
         $instance->setPort($metedata['port']['$']);
         $instance->setAddress($address);
         $instance->setStatus($status);
         $instance->setName($metedata['app']);
-        $instance->setMetaData($metedata['metadata']);
         return $instance;
     }
 }
