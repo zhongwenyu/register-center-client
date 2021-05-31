@@ -69,6 +69,7 @@ class InstanceUtil{
         $instance->setAddress($address);
         $instance->setStatus($status);
         $instance->setName($metedata['app']);
+        $instance->setMetaData($metedata);
         return $instance;
     }
 }
